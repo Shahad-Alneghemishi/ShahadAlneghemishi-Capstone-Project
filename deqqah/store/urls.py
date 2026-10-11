@@ -5,4 +5,5 @@ app_name = "store"
 
 urlpatterns = [
     path("", views.home, name="home"),
+    path("register/", views.register, name="register"),
 ]
