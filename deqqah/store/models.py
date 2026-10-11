@@ -21,15 +21,8 @@ class Customer(models.Model):
 
 
 class Device(models.Model):
-    class DeviceType(models.TextChoices):
-        DESKTOP = "desktop", "Desktop"
-        LAPTOP = "laptop", "Laptop"
-
     customer = models.ForeignKey(
         Customer, on_delete=models.PROTECT, related_name="devices"
-    )
-    device_type = models.CharField(
-        max_length=10, choices=DeviceType.choices, default=DeviceType.DESKTOP
     )
     brand = models.CharField(max_length=50)
     model_name = models.CharField(max_length=80)
