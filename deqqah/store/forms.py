@@ -2,6 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
+from django.utils import timezone
 
 from .models import Customer, Device, ServiceOrder, ServiceType
 
@@ -48,4 +49,19 @@ class OrderForm(forms.ModelForm):
     class Meta:
         model = ServiceOrder
         fields = ("device", "customer_notes")
+
+
+class StaffOrderForm(forms.ModelForm):
+    class Meta:
+        model = ServiceOrder
+        fields = ("technician", "status", "staff_notes")
+
+    def clean(self):
+        cleaned_data = super().clean()
+        if (
+            cleaned_data.get("status") == ServiceOrder.Status.DELIVERED
+            and not self.instance.completed_at
+        ):
+            self.instance.completed_at = timezone.now()
+        return cleaned_data
 

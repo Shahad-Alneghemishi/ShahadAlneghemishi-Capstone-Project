@@ -6,8 +6,8 @@ from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import ProtectedError, Sum, Q
-from .forms import CustomerRegistrationForm, DeviceForm, OrderForm
-from .models import Customer, Device, OrderItem, ServiceOrder
+from .forms import CustomerRegistrationForm, DeviceForm, OrderForm, StaffOrderForm
+from .models import Customer, Device, OrderItem, ServiceOrder, Technician
 # Create your views here.
 def home(request):
     return render(request, "store/home.html")
@@ -155,3 +155,26 @@ def staff_order_list(request):
         "q": q,
         "statuses": ServiceOrder.Status.choices,
     })
+
+
+@login_required
+def staff_order_update(request, pk):
+    if not request.user.is_staff:
+        raise PermissionDenied
+    order = get_object_or_404(ServiceOrder, pk=pk)
+    if order.status == ServiceOrder.Status.CANCELLED:
+        messages.error(request, "A cancelled order cannot be edited.")
+        return redirect("store:staff_order_list")
+
+    if request.method == "POST":
+        form = StaffOrderForm(request.POST, instance=order)
+        form.fields["technician"].queryset = Technician.objects.filter(is_active=True)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Order updated.")
+            return redirect("store:staff_order_list")
+    else:
+        form = StaffOrderForm(instance=order)
+        form.fields["technician"].queryset = Technician.objects.filter(is_active=True)
+
+    return render(request, "store/staff_order_form.html", {"form": form, "order": order})

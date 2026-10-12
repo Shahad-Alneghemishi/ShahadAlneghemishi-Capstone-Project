@@ -25,7 +25,7 @@
     <thead>
       <tr>
         <th>#</th><th>Customer</th><th>Device</th><th>Status</th>
-        <th>Technician</th><th>Total</th><th>Created</th>
+        <th>Technician</th><th>Total</th><th>Created</th><th></th>
       </tr>
     </thead>
     <tbody>
@@ -38,9 +38,14 @@
           <td>{{ order.technician.name|default:"Unassigned" }}</td>
           <td>{{ order.total|default:0 }}</td>
           <td>{{ order.created_at|date:"Y-m-d" }}</td>
+          <td>
+            {% if order.status != "cancelled" %}
+              <a href="{% url 'store:staff_order_update' order.pk %}">Update</a>
+            {% endif %}
+          </td>
         </tr>
       {% empty %}
-        <tr><td colspan="7">No orders match your search.</td></tr>
+        <tr><td colspan="8">No orders match your search.</td></tr>
       {% endfor %}
     </tbody>
   </table>

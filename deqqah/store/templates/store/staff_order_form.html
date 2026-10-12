@@ -1,0 +1,19 @@
+{% extends "store/base.html" %}
+
+{% block title %}Update order #{{ order.pk }}{% endblock %}
+
+{% block content %}
+  <h1>Update order #{{ order.pk }}</h1>
+  <p>{{ order.device.customer.name }} - {{ order.device.brand }} {{ order.device.model_name }}</p>
+  <ul>
+    {% for item in order.items.all %}
+      <li>{{ item.service_type.name }} - {{ item.price }}</li>
+    {% endfor %}
+  </ul>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Save</button>
+    <a href="{% url 'store:staff_order_list' %}">Cancel</a>
+  </form>
+{% endblock %}
