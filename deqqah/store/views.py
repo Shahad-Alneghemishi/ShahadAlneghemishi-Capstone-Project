@@ -2,8 +2,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.db.models import ProtectedError
 from .forms import CustomerRegistrationForm, DeviceForm
-from .models import Customer
+from .models import Customer, Device
 # Create your views here.
 def home(request):
     return render(request, "store/home.html")
@@ -40,3 +41,29 @@ def device_create(request):
     else:
         form = DeviceForm()
     return render(request, "store/device_form.html", {"form": form, "title": "Add a device"})
+
+
+@login_required
+def device_update(request, pk):
+    device = get_object_or_404(Device, pk=pk, customer__user=request.user)
+    if request.method == "POST":
+        form = DeviceForm(request.POST, instance=device)
+        if form.is_valid():
+            form.save()
+            messages.success(request, "Device updated.")
+            return redirect("store:device_list")
+    else:
+        form = DeviceForm(instance=device)
+    return render(request, "store/device_form.html", {"form": form, "title":"Edit device"})
+
+@login_required
+def device_delete(request, pk):
+    device = get_object_or_404(Device, pk=pk, customer__user=request.user)
+    if request.method == "POST":
+        try:
+            device.delete()
+            messages.success(request, "Device deleted.")
+        except ProtectedError:
+            messages.error(request, "This device has service orders, so it cannot be deleted.")
+        return redirect("store:device_list")
+    return render(request, "store/device_confirm_delete.html", {"device": device})

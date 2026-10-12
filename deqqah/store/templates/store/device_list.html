@@ -8,7 +8,11 @@
 
     <ul>
       {% for device in devices %}
-        <li>{{ device.brand }} {{ device.model_name }}</li>
+        <li>
+            {{ device.brand }} {{ device.model_name }}
+            <a href="{% url 'store:device_update' device.pk %}">Edit</a>
+            <a href="{% url 'store:device_delete' device.pk %}">Delete</a>
+        </li>
       {% empty %}
         <li>You have no devices yet. Add your first one.</li>
       {% endfor %}
