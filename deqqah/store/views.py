@@ -3,7 +3,9 @@ from django.contrib import messages
 from django.db import transaction
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.db.models import ProtectedError, Sum
+from django.core.exceptions import PermissionDenied
+from django.core.paginator import Paginator
+from django.db.models import ProtectedError, Sum, Q
 from .forms import CustomerRegistrationForm, DeviceForm, OrderForm
 from .models import Customer, Device, OrderItem, ServiceOrder
 # Create your views here.
@@ -123,3 +125,33 @@ def order_cancel(request, pk):
         return redirect("store:order_list")
 
     return render(request, "store/order_confirm_cancel.html", {"order": order})
+
+@login_required
+def staff_order_list(request):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    orders = ServiceOrder.objects.select_related(
+        "device__customer", "technician"
+    ).annotate(total=Sum("items__price"))
+
+    status = request.GET.get("status", "")
+    q = request.GET.get("q", "").strip()
+
+    if status:
+        orders = orders.filter(status=status)
+    if q:
+        orders = orders.filter(
+            Q(device__customer__name__icontains=q)
+            | Q(device__brand__icontains=q)
+            | Q(device__model_name__icontains=q)
+        )
+
+    page = Paginator(orders, 5).get_page(request.GET.get("page"))
+
+    return render(request, "store/staff_order_list.html", {
+        "page": page,
+        "status": status,
+        "q": q,
+        "statuses": ServiceOrder.Status.choices,
+    })
