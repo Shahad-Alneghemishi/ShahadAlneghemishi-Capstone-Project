@@ -13,6 +13,7 @@
         <form method="post" action="{% url 'logout' %}">
           {% csrf_token %}
           <a href="{% url 'store:device_list' %}">My devices</a>
+          <a href="{% url 'store:order_list' %}">My orders</a>
           <button type="submit">Log out</button>
         </form>
       {% else %}

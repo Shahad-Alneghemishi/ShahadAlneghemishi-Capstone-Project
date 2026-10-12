@@ -9,5 +9,8 @@ urlpatterns = [
     path("devices/", views.device_list, name="device_list"),
     path("devices/add/", views.device_create, name="device_create"),
     path("devices/<int:pk>/edit/", views.device_update, name="device_update"),
-    path("devices/<int:pk>/delete/", views.device_delete, name="device_delete")
+    path("devices/<int:pk>/delete/", views.device_delete, name="device_delete"),
+    path("orders/", views.order_list, name="order_list"),
+    path("orders/new/", views.order_create, name="order_create"),
+    path("orders/<int:pk>/cancel/", views.order_cancel, name="order_cancel"),
 ]

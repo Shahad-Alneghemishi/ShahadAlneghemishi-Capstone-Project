@@ -1,0 +1,27 @@
+{% extends "store/base.html" %}
+
+{% block title %}My orders{% endblock %}
+
+{% block content %}
+  <h1>My orders</h1>
+  <a href="{% url 'store:order_create' %}">Request a service</a>
+  <ul>
+    {% for order in orders %}
+      <li>
+        Order #{{ order.pk }} - {{ order.device.brand }} {{ order.device.model_name }}
+        - {{ order.get_status_display }} ({{ order.created_at|date:"Y-m-d" }})
+        <ul>
+          {% for item in order.items.all %}
+            <li>{{ item.service_type.name }} - {{ item.price }}</li>
+          {% endfor %}
+        </ul>
+        Total: {{ order.total|default:0 }}
+        {% if order.can_customer_cancel %}
+            <a href="{% url 'store:order_cancel' order.pk %}">Cancel order</a>
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>You have no orders yet.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.db import transaction
 
-from .models import Customer, Device
+from .models import Customer, Device, ServiceOrder, ServiceType
 
 User = get_user_model()
 
@@ -37,3 +37,15 @@ class DeviceForm(forms.ModelForm):
     class Meta:
         model = Device
         fields = ("brand", "model_name")
+
+
+class OrderForm(forms.ModelForm):
+    services = forms.ModelMultipleChoiceField(
+        queryset=ServiceType.objects.filter(is_active=True),
+        widget=forms.CheckboxSelectMultiple,
+    )
+
+    class Meta:
+        model = ServiceOrder
+        fields = ("device", "customer_notes")
+

@@ -1,10 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from django.db import transaction
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.db.models import ProtectedError
-from .forms import CustomerRegistrationForm, DeviceForm
-from .models import Customer, Device
+from django.db.models import ProtectedError, Sum
+from .forms import CustomerRegistrationForm, DeviceForm, OrderForm
+from .models import Customer, Device, OrderItem, ServiceOrder
 # Create your views here.
 def home(request):
     return render(request, "store/home.html")
@@ -67,3 +68,58 @@ def device_delete(request, pk):
             messages.error(request, "This device has service orders, so it cannot be deleted.")
         return redirect("store:device_list")
     return render(request, "store/device_confirm_delete.html", {"device": device})
+
+
+@login_required
+def order_list(request):
+    orders = (
+        ServiceOrder.objects.filter(device__customer__user=request.user)
+        .select_related("device")
+        .prefetch_related("items__service_type")
+        .annotate(total=Sum("items__price"))
+    )
+    return render(request, "store/order_list.html", {"orders": orders})
+
+
+@login_required
+def order_create(request):
+    customer = get_object_or_404(Customer, user=request.user)
+    if not customer.devices.exists():
+        messages.info(request, "Add a device before requesting a service.")
+        return redirect("store:device_create")
+
+    if request.method == "POST":
+        form = OrderForm(request.POST)
+        form.fields["device"].queryset = customer.devices.all()
+        if form.is_valid():
+            with transaction.atomic():
+                order = form.save()
+                for service in form.cleaned_data["services"]:
+                    OrderItem.objects.create(
+                    order=order, service_type=service, price=service.price
+                )
+            messages.success(request, "Your request has been submitted.")
+            return redirect("store:order_list")
+    else:
+        form = OrderForm()
+        form.fields["device"].queryset = customer.devices.all()
+
+    return render(request, "store/order_form.html", {"form": form})
+
+
+@login_required
+def order_cancel(request, pk):
+    order = get_object_or_404(
+        ServiceOrder, pk=pk, device__customer__user=request.user
+    )
+    if not order.can_customer_cancel:
+        messages.error(request, "This order can no longer be cancelled.")
+        return redirect("store:order_list")
+
+    if request.method == "POST":
+        order.status = ServiceOrder.Status.CANCELLED
+        order.save()
+        messages.success(request, "Order cancelled.")
+        return redirect("store:order_list")
+
+    return render(request, "store/order_confirm_cancel.html", {"order": order})

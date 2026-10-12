@@ -1,0 +1,13 @@
+{% extends "store/base.html" %}
+
+{% block title %}Cancel order{% endblock %}
+
+{% block content %}
+  <h1>Cancel order #{{ order.pk }}</h1>
+  <p>Are you sure you want to cancel this request? This cannot be undone.</p>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Yes, cancel the order</button>
+    <a href="{% url 'store:order_list' %}">Keep the order</a>
+  </form>
+{% endblock %}
