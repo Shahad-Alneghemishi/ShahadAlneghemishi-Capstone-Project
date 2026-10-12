@@ -1,0 +1,16 @@
+{% extends "store/base.html" %}
+
+{% block title %}My devices{% endblock %}
+
+{% block content %}
+  <h1>My devices</h1>
+  <a href="{% url 'store:device_create' %}">Add a device</a>
+
+    <ul>
+      {% for device in devices %}
+        <li>{{ device.brand }} {{ device.model_name }}</li>
+      {% empty %}
+        <li>You have no devices yet. Add your first one.</li>
+      {% endfor %}
+    </ul>
+{% endblock %}
