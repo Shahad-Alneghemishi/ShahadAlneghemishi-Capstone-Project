@@ -18,6 +18,7 @@
           {% endif %}
           {% if user.is_staff %}
             <a href="{% url 'store:staff_order_list' %}">All orders</a>
+            <a href="{% url 'store:reports' %}">Reports</a>
           {% endif %}
           <button type="submit">Log out</button>
         </form>

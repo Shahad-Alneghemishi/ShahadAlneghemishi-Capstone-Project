@@ -1,0 +1,61 @@
+{% extends "store/base.html" %}
+
+{% block title %}Reports{% endblock %}
+
+{% block content %}
+  <h1>Reports</h1>
+
+  <section>
+    <h2>Revenue</h2>
+    <p>Counts delivered orders only. It shows what the shop has actually earned, so you can compare it with your costs.</p>
+    <ul>
+      <li>Total revenue: {{ revenue }}</li>
+      <li>Delivered orders: {{ delivered_count }}</li>
+      <li>Average order value: {{ average_order|floatformat:2 }}</li>
+    </ul>
+  </section>
+
+  <section>
+    <h2>Technician workload</h2>
+    <p>Helps you decide who should get the next order.</p>
+    <table>
+      <thead>
+        <tr><th>Technician</th><th>Orders</th><th>In progress</th><th>Active</th></tr>
+      </thead>
+      <tbody>
+        {% for t in technicians %}
+          <tr>
+            <td>{{ t.name }}</td>
+            <td>{{ t.order_count }}</td>
+            <td>{{ t.in_progress_count }}</td>
+            <td>{{ t.is_active|yesno:"Yes,No" }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4">No technicians yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>Services</h2>
+    <p>Cancelled orders are not counted. It shows which services customers ask for and which earn the most, so you can decide what to promote or reprice.</p>
+    <table>
+      <thead>
+        <tr><th>Service</th><th>Times requested</th><th>Delivered revenue</th><th>Active</th></tr>
+      </thead>
+      <tbody>
+        {% for s in services %}
+          <tr>
+            <td>{{ s.name }}</td>
+            <td>{{ s.times_requested }}</td>
+            <td>{{ s.delivered_revenue|default:0 }}</td>
+            <td>{{ s.is_active|yesno:"Yes,No" }}</td>
+          </tr>
+        {% empty %}
+          <tr><td colspan="4">No services yet.</td></tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+{% endblock %}

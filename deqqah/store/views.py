@@ -5,9 +5,9 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
-from django.db.models import ProtectedError, Sum, Q
+from django.db.models import ProtectedError, Sum, Q, Avg, Count
 from .forms import CustomerRegistrationForm, DeviceForm, OrderForm, StaffOrderForm
-from .models import Customer, Device, OrderItem, ServiceOrder, Technician
+from .models import Customer, Device, OrderItem, ServiceOrder, Technician, ServiceType
 # Create your views here.
 def home(request):
     return render(request, "store/home.html")
@@ -178,3 +178,46 @@ def staff_order_update(request, pk):
         form.fields["technician"].queryset = Technician.objects.filter(is_active=True)
 
     return render(request, "store/staff_order_form.html", {"form": form, "order": order})
+
+
+@login_required
+def reports(request):
+    if not request.user.is_staff:
+        raise PermissionDenied
+
+    S = ServiceOrder.Status
+    delivered = ServiceOrder.objects.filter(status=S.DELIVERED)
+
+    # Aggregation: one number for the whole queryset
+    revenue = OrderItem.objects.filter(order__status=S.DELIVERED).aggregate(
+        total=Sum("price")
+    )["total"] or 0
+    delivered_count = delivered.count()
+    average_order = delivered.annotate(total=Sum("items__price")).aggregate(
+        avg=Avg("total")
+    )["avg"] or 0
+
+    # Annotation: one number for each technician
+    technicians = Technician.objects.annotate(
+        order_count=Count("orders"),
+        in_progress_count=Count("orders", filter=Q(orders__status=S.IN_PROGRESS)),
+    ).order_by("-order_count", "name")
+
+    # Annotation: one number for each service
+    counted = [S.REQUESTED, S.IN_PROGRESS, S.READY, S.DELIVERED]
+    services = ServiceType.objects.annotate(
+        times_requested=Count(
+            "order_items", filter=Q(order_items__order__status__in=counted)
+        ),
+        delivered_revenue=Sum(
+            "order_items__price", filter=Q(order_items__order__status=S.DELIVERED)
+        ),
+    ).order_by("-times_requested", "name")
+
+    return render(request, "store/reports.html", {
+        "revenue": revenue,
+        "delivered_count": delivered_count,
+        "average_order": average_order,
+        "technicians": technicians,
+        "services": services,
+    })
