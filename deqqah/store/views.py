@@ -221,3 +221,7 @@ def reports(request):
         "technicians": technicians,
         "services": services,
     })
+
+def service_list(request):
+    services = ServiceType.objects.filter(is_active=True)
+    return render(request, "store/services.html", {"services": services})

@@ -16,4 +16,5 @@ urlpatterns = [
     path("staff/orders/", views.staff_order_list, name="staff_order_list"),
     path("staff/orders/<int:pk>/edit/", views.staff_order_update, name="staff_order_update"),
     path("staff/reports/", views.reports, name="reports"),
+    path("services/", views.service_list, name="service_list"),
 ]

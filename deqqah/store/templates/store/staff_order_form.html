@@ -7,7 +7,7 @@
   <p>{{ order.device.customer.name }} - {{ order.device.brand }} {{ order.device.model_name }}</p>
   <ul>
     {% for item in order.items.all %}
-      <li>{{ item.service_type.name }} - {{ item.price }}</li>
+      <li>{{ item.service_type.name }} - {{ item.price }} SAR</li>
     {% endfor %}
   </ul>
   <form method="post">

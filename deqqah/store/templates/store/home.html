@@ -1,6 +1,61 @@
 {% extends "store/base.html" %}
+{% load static %}
 
 {% block content %}
-  <h1>Deqqah</h1>
-  <p>PC cleaning and assembly services.</p>
+  <section class="hero">
+    <div>
+      <h1>Your PC, Built with Precision.</h1>
+      <p class="lead">From assembly to cleaning and maintenance, we take care of your PC with precision.</p>
+      <div class="hero-actions">
+        <a class="button button-secondary" href="{% url 'store:service_list' %}">Explore Services</a>
+        {% if user.is_staff and not user.customer %}
+          <a class="button" href="{% url 'store:staff_order_list' %}">View Orders</a>
+        {% elif user.is_authenticated %}
+          <a class="button" href="{% url 'store:order_create' %}">Request a Service</a>
+        {% else %}
+          <a class="button" href="{% url 'store:register' %}">Request a Service</a>
+        {% endif %}
+      </div>
+    </div>
+    <div class="hero-art">
+      <img src="{% static 'images/hero.svg' %}" alt="Illustration of a desktop computer with a monitor and a tower being cleaned" width="480" height="360">
+    </div>
+  </section>
+
+  <section>
+    <h2>How it works</h2>
+    <div class="grid">
+      <div class="card">
+        <div class="step-number" aria-hidden="true">1</div>
+        <h3>Create your account</h3>
+        <p>Sign up and save your computer's brand and model.</p>
+      </div>
+      <div class="card">
+        <div class="step-number" aria-hidden="true">2</div>
+        <h3>Tell us what you need</h3>
+        <p>Choose one or more services and describe any problem.</p>
+      </div>
+      <div class="card">
+        <div class="step-number" aria-hidden="true">3</div>
+        <h3>We handle the rest</h3>
+        <p>Our technicians take care of your PC, and you follow each step in My orders.</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Questions</h2>
+    <details>
+      <summary>Which computers do you support?</summary>
+      <p>Desktop PCs for now.</p>
+    </details>
+    <details>
+      <summary>Can I cancel an order?</summary>
+      <p>Yes, while it is still Requested. Once our technician starts working on it, it can no longer be cancelled.</p>
+    </details>
+    <details>
+      <summary>How do I follow my order?</summary>
+      <p>Log in and open My orders to see the status, the services and the total of each order.</p>
+    </details>
+  </section>
 {% endblock %}

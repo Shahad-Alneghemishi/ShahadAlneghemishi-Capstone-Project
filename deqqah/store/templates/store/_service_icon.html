@@ -1,0 +1,33 @@
+<div class="service-icon" aria-hidden="true">
+  {% if "Clean" in name %}
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M30 14 L35 27 L48 32 L35 37 L30 50 L25 37 L12 32 L25 27 Z"/>
+      <path d="M48 8 L50 13 L55 15 L50 17 L48 22 L46 17 L41 15 L46 13 Z"/>
+    </svg>
+  {% elif "Paste" in name %}
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="16" y="25" width="26" height="14" rx="3"/>
+      <path d="M16 32 H8 M8 25 V39"/>
+      <path d="M42 32 H54"/>
+      <circle cx="58" cy="32" r="2"/>
+      <path d="M24 25 V39 M30 25 V39"/>
+    </svg>
+  {% elif "Install" in name %}
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="10" y="12" width="44" height="32" rx="4"/>
+      <path d="M32 44 V52 M22 52 H42"/>
+      <path d="M32 20 V34 M25 28 L32 35 L39 28"/>
+    </svg>
+  {% elif "Assembl" in name %}
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="20" y="20" width="24" height="24" rx="3"/>
+      <rect x="27" y="27" width="10" height="10" rx="1"/>
+      <path d="M26 12 V20 M38 12 V20 M26 44 V52 M38 44 V52 M12 26 H20 M12 38 H20 M44 26 H52 M44 38 H52"/>
+    </svg>
+  {% else %}
+    <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="32" cy="32" r="9"/>
+      <path d="M32 10 V17 M32 47 V54 M10 32 H17 M47 32 H54 M16 16 L21 21 M43 43 L48 48 M48 16 L43 21 M16 48 L21 43"/>
+    </svg>
+  {% endif %}
+</div>

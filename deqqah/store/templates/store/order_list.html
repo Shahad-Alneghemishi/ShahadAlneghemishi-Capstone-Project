@@ -12,10 +12,10 @@
         - {{ order.get_status_display }} ({{ order.created_at|date:"Y-m-d" }})
         <ul>
           {% for item in order.items.all %}
-            <li>{{ item.service_type.name }} - {{ item.price }}</li>
+            <li>{{ item.service_type.name }} - {{ item.price }} SAR</li>
           {% endfor %}
         </ul>
-        Total: {{ order.total|default:0 }}
+        Total: {{ order.total|default:0 }} SAR
         {% if order.can_customer_cancel %}
             <a href="{% url 'store:order_cancel' order.pk %}">Cancel order</a>
         {% endif %}
