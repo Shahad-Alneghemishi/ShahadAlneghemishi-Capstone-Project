@@ -5,12 +5,18 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>{% block title %}Deqqah{% endblock %}</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
   <header class="site-header">
     <nav class="nav" aria-label="Main">
-      <a class="brand" href="{% url 'store:home' %}">Deqqah</a>
+      <a class="brand" href="{% url 'store:home' %}" aria-label="Deqqah - دقة">
+        <span class="brand-ar" lang="ar">دقة</span>
+        <span class="brand-en">Deqqah</span>
+      </a>
       <div class="nav-links">
         <a href="{% url 'store:home' %}">Home</a>
         <a href="{% url 'store:service_list' %}">Services</a>

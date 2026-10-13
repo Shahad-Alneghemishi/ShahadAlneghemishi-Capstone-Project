@@ -13,3 +13,4 @@
 ## Known limitations
 
 - Desktop PCs only. Laptop support is a future improvement.
+- The interface is English only (the logo is bilingual). An Arabic interface is a planned improvement.

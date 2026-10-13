@@ -86,6 +86,6 @@ Reports (staff)
 | 2 | README, sample data and fresh setup check | To do |
 | 2 | Verification record | In progress |
 | 2 | Demo preparation | To do |
-| 3 | Future: laptop support, notifications, online payment, order detail page | Not planned for this version |
+| 3 | Future: Arabic interface, laptop support, notifications, online payment, order detail page | Not planned for this version |
 
 Blockers: none.

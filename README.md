@@ -20,8 +20,8 @@ Small PC repair shops usually take requests by phone or chat and track them on p
 
 ## Versions
 
-- Python 3.14.6
-- Django 6.1.2
+- Python 3.14
+- Django <DJANGO_VERSION>
 - SQLite (Django default)
 
 ## Setup
@@ -29,8 +29,8 @@ Small PC repair shops usually take requests by phone or chat and track them on p
 Run these commands from a terminal. `requirements.txt` is in the repository root; the Django project (`manage.py`) is in the `deqqah` folder.
 
 ```
-git clone https://github.com/Shahad-Alneghemishi/ShahadAlneghemishi-Capstone-Project.git
-cd ShahadAlneghemishi-Capstone-Project
+git clone <repository-url>
+cd ShahadAlneghemishi-Capstone
 python -m venv venv
 ```
 
@@ -89,14 +89,22 @@ python manage.py createsuperuser
 
 - **Audience:** owners of small PC repair and assembly shops that still take requests by phone or chat.
 - **Value:** one place for requests, clear order statuses for customers, and simple reports for the owner.
+- **Language (assumption):** most customers in the target market read Arabic, so an Arabic interface is the first practical improvement.
 - **Revenue model (assumption):** a monthly subscription per shop.
 - **Evidence and assumptions:** the problem comes from how such shops usually work; no customer interviews or payment data exist yet, so demand and the subscription price are assumptions to be validated with real shops.
 
 ## Known limitations
 
 - Desktop PCs only. Laptop support is a possible next improvement.
+- The interface is in English only (the logo is bilingual). An Arabic interface is planned as the next improvement.
 - No online payment and no email or SMS notifications.
 - The sample data is fictitious.
+
+## Next improvements
+
+- Arabic interface with a language switch and a right-to-left layout: translate the templates and messages, and store translated names and descriptions for the services.
+- Laptop support.
+- Email or SMS notifications when the status of an order changes.
 
 ## Acknowledgements
 
