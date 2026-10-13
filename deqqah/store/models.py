@@ -49,7 +49,7 @@ class ServiceType(models.Model):
         ]
 
     def __str__(self):
-        return self.name
+        return f"{self.name} - {self.price} SAR"
 
 
 class Technician(models.Model):
@@ -102,6 +102,11 @@ class ServiceOrder(models.Model):
             raise ValidationError("Completion date cannot be before the request date.")
         if self.status == self.Status.DELIVERED and not self.completed_at:
             raise ValidationError("A delivered order must have a completion date.")
+        if (
+            self.status in (self.Status.IN_PROGRESS, self.Status.READY, self.Status.DELIVERED)
+            and not self.technician_id
+        ):
+            raise ValidationError("Assign a technician before moving the order past Requested!")
 
     @property
     def can_customer_cancel(self):
