@@ -1,7 +1,7 @@
 from django.db import models
 from django.conf import settings
 from django.core.exceptions import ValidationError
-from django.db.models import F, Q, Sum
+from django.db.models import F, Q
 from django.utils import timezone
 
 # Create your models here.
@@ -112,9 +112,6 @@ class ServiceOrder(models.Model):
     def can_customer_cancel(self):
         return self.status == self.Status.REQUESTED
 
-    @property
-    def total_price(self):
-        return self.items.aggregate(total=Sum("price"))["total"] or 0
 
     def __str__(self):
         return f"Order #{self.pk} - {self.device}"

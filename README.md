@@ -21,7 +21,7 @@ Small PC repair shops usually take requests by phone or chat and track them on p
 ## Versions
 
 - Python 3.14
-- Django <DJANGO_VERSION>
+- Django 6.1.2
 - SQLite (Django default)
 
 ## Setup
@@ -29,8 +29,8 @@ Small PC repair shops usually take requests by phone or chat and track them on p
 Run these commands from a terminal. `requirements.txt` is in the repository root; the Django project (`manage.py`) is in the `deqqah` folder.
 
 ```
-git clone <repository-url>
-cd ShahadAlneghemishi-Capstone
+git clone https://github.com/Shahad-Alneghemishi/ShahadAlneghemishi-Capstone-Project.git
+cd ShahadAlneghemishi-Capstone-Project
 python -m venv venv
 ```
 
@@ -78,6 +78,18 @@ To use the Django admin site as well, create your own account:
 ```
 python manage.py createsuperuser
 ```
+
+## Reproducing the demonstration
+
+1. Load the sample data as described in Setup and start the server.
+2. As a visitor: open the home page, click Explore Services, then Request a Service, which leads to the registration page. Register a new customer with a fictitious name and phone number.
+3. As the new customer: add a device, request two services (the prices are shown next to each service) and open My orders to see the order with status Requested.
+4. Log out and log in as `staff`: open All orders, search and filter, then Update the new order: assign a technician, set In Progress, then Ready, then Delivered (the completion date is filled in automatically).
+5. Log in as the customer again: the new status appears in My orders, and only Requested orders show a Cancel link.
+6. Failure cases: as `reem`, try to delete the device that has orders (it is refused with a message). As `staff`, try to set a Requested order to In Progress without a technician (an error is shown).
+7. As `staff`, open Reports: revenue and average order value, orders per technician, and requests and revenue per service. The figures change after step 4.
+
+To return to the original demo data, run the sample data command again.
 
 ## Documentation
 
