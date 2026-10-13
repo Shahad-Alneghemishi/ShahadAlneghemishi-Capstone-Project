@@ -18,6 +18,24 @@ Small PC repair shops usually take requests by phone or chat and track them on p
 - Business rules: a device with orders cannot be deleted; an order past Requested needs a technician; a delivered order gets its completion date automatically; only Requested orders can be cancelled by the customer; the price of each service is saved on the order when it is placed
 - Responsive layout for desktop and phone
 
+## Screenshots
+
+![Home page with the logo, headline and the Explore Services and Request a Service buttons](docs/screenshots/home.png)
+*Home page, seen by a visitor.*
+
+![Services page with an icon and a price in SAR on each card](docs/screenshots/services.png)
+*Services page, open to everyone. Prices are fixed per service.*
+![Request a service form with the prices shown next to each service](docs/screenshots/request-service.png)
+*Customer view (`reem`): the customer chooses a device and services and sees the prices before ordering.*
+![My orders page with the status, services and total of each order](docs/screenshots/my-orders.png)
+*Customer view (`reem`): only this customer's orders. The Cancel link appears only for Requested orders.*
+![Staff page listing all orders with search, status filter and pagination](docs/screenshots/staff-orders.png)
+*Staff view (`staff`): every order, with search, status filter and pagination.*
+![Reports page with revenue, orders per technician and requests per service](docs/screenshots/reports.png)
+*Staff view (`staff`): revenue and average order value (aggregation), orders per technician and per service (annotation).*
+
+![Home page at phone width](docs/screenshots/mobile.png)
+*Home page at phone width (375 px).*
 ## Versions
 
 - Python 3.14
@@ -94,7 +112,7 @@ To return to the original demo data, run the sample data command again.
 ## Documentation
 
 - [Entity relationship diagram](docs/erd.png)
-- [Design notes: user journeys, wireframes and task list](docs/DESIGN.md)
+- [Design notes: user journeys, wireframes, task list and database design decisions](docs/DESIGN.md)
 - [Verification record](docs/TESTING.md)
 
 ## Market potential

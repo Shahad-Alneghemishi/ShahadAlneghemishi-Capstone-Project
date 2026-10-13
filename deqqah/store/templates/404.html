@@ -1,0 +1,15 @@
+{% extends "store/base.html" %}
+
+{% block title %}Page not found{% endblock %}
+
+{% block content %}
+  <section class="error-page">
+    <p class="error-code">404</p>
+    <h1>We couldn't find that page</h1>
+    <p class="lead">The page may have moved, or the link may be wrong.</p>
+    <div class="hero-actions">
+      <a class="button" href="{% url 'store:home' %}">Back to home</a>
+      <a class="button button-secondary" href="{% url 'store:service_list' %}">Explore Services</a>
+    </div>
+  </section>
+{% endblock %}

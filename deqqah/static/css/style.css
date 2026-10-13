@@ -223,9 +223,15 @@ th, td { padding: 0.6rem 0.8rem; border-bottom: 1px solid var(--border); text-al
 th { background: #f6f6f9; font-size: 0.9rem; color: var(--muted); }
 tbody tr:hover { background: #f8f8fb; }
 
+/* ---------- Error pages ---------- */
+.error-page { text-align: center; padding: 3rem 0; }
+.error-code { font-size: 5rem; font-weight: 800; line-height: 1; margin: 0; color: var(--primary); }
+.error-page .hero-actions { justify-content: center; }
+
 /* ---------- Phones ---------- */
 @media (max-width: 720px) {
   .hero { grid-template-columns: 1fr; }
+  .hero-art { order: -1; }
 
   .nav { flex-direction: column; align-items: flex-start; }
   .nav-links { width: 100%; }
