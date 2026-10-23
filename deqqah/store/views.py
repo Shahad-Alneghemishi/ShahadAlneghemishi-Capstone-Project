@@ -3,10 +3,13 @@ from django.contrib import messages
 from django.db import transaction
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import views as auth_views
+from django.contrib.messages.views import SuccessMessageMixin
+from django.urls import reverse_lazy
 from django.core.exceptions import PermissionDenied
 from django.core.paginator import Paginator
 from django.db.models import ProtectedError, Sum, Q, Avg, Count
-from .forms import CustomerRegistrationForm, DeviceForm, OrderForm, StaffOrderForm
+from .forms import CustomerRegistrationForm, DeviceForm, OrderForm, StaffOrderForm, AccountForm
 from .models import Customer, Device, OrderItem, ServiceOrder, Technician, ServiceType
 # Create your views here.
 def home(request):
@@ -225,3 +228,25 @@ def reports(request):
 def service_list(request):
     services = ServiceType.objects.filter(is_active=True)
     return render(request, "store/services.html", {"services": services})
+
+
+@login_required
+def account(request):
+    customer = getattr(request.user, "customer", None)
+    form = None
+    if customer is not None:
+        if request.method == "POST":
+            form = AccountForm(request.POST, instance=customer)
+            if form.is_valid():
+                form.save()
+                messages.success(request, "Your account was updated.")
+                return redirect("store:account")
+        else:
+            form = AccountForm(instance=customer)
+    return render(request, "store/account.html", {"form": form, "customer": customer})
+
+
+class PasswordChange(SuccessMessageMixin, auth_views.PasswordChangeView):
+    template_name = "store/password_change.html"
+    success_url = reverse_lazy("store:account")
+    success_message = "Your password was changed."

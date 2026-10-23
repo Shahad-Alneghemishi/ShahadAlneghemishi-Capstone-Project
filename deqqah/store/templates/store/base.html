@@ -7,10 +7,12 @@
   <title>{% block title %}Deqqah{% endblock %}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  {% block extra_head %}{% endblock %}
 </head>
 <body>
+  {% block header %}
   <header class="site-header">
     <nav class="nav" aria-label="Main">
       <a class="brand" href="{% url 'store:home' %}" aria-label="Deqqah - دقة">
@@ -29,6 +31,7 @@
             <a href="{% url 'store:staff_order_list' %}">All orders</a>
             <a href="{% url 'store:reports' %}">Reports</a>
           {% endif %}
+          <a href="{% url 'store:account' %}">Account</a>
           <form method="post" action="{% url 'logout' %}">
             {% csrf_token %}
             <button type="submit" class="button-light">Log out</button>
@@ -40,7 +43,9 @@
       </div>
     </nav>
   </header>
+  {% endblock %}
 
+  {% block main %}
   <main class="container">
     {% if messages %}
       {% for message in messages %}
@@ -50,6 +55,7 @@
 
     {% block content %}{% endblock %}
   </main>
+  {% endblock %}
 
   <footer class="site-footer">
     <p>&copy; 2026 Deqqah. PC cleaning and assembly.</p>

@@ -16,26 +16,9 @@ Small PC repair shops usually take requests by phone or chat and track them on p
 - Staff: all orders with search, status filter and pagination; update an order (technician and status); reports page
 - Reports: revenue of delivered orders and average order value (aggregation); orders per technician and requests and revenue per service (annotation)
 - Business rules: a device with orders cannot be deleted; an order past Requested needs a technician; a delivered order gets its completion date automatically; only Requested orders can be cancelled by the customer; the price of each service is saved on the order when it is placed
+- Account page: customers edit their name and phone, and every user can change the password
 - Responsive layout for desktop and phone
 
-## Screenshots
-
-![Home page with the logo, headline and the Explore Services and Request a Service buttons](docs/screenshots/home.png)
-*Home page, seen by a visitor.*
-
-![Services page with an icon and a price in SAR on each card](docs/screenshots/services.png)
-*Services page, open to everyone. Prices are fixed per service.*
-![Request a service form with the prices shown next to each service](docs/screenshots/request-service.png)
-*Customer view (`reem`): the customer chooses a device and services and sees the prices before ordering.*
-![My orders page with the status, services and total of each order](docs/screenshots/my-orders.png)
-*Customer view (`reem`): only this customer's orders. The Cancel link appears only for Requested orders.*
-![Staff page listing all orders with search, status filter and pagination](docs/screenshots/staff-orders.png)
-*Staff view (`staff`): every order, with search, status filter and pagination.*
-![Reports page with revenue, orders per technician and requests per service](docs/screenshots/reports.png)
-*Staff view (`staff`): revenue and average order value (aggregation), orders per technician and per service (annotation).*
-
-![Home page at phone width](docs/screenshots/mobile.png)
-*Home page at phone width (375 px).*
 ## Versions
 
 - Python 3.14
@@ -57,11 +40,17 @@ Activate the environment:
 - Windows PowerShell: `.\venv\Scripts\Activate.ps1`
 - macOS / Linux: `source venv/bin/activate`
 
-Then install, migrate, load the sample data and start the server:
+Then install the requirements and create the configuration file (see Configuration below):
 
 ```
 python -m pip install -r requirements.txt
 cd deqqah
+copy .env.example .env
+```
+
+(On macOS / Linux use `cp .env.example .env`.) Edit `.env` and set a secret key, then migrate, load the sample data and start the server:
+
+```
 python manage.py migrate
 python manage.py shell -c "exec(open('seed_data.py', encoding='utf-8').read())"
 python manage.py runserver
@@ -71,17 +60,20 @@ Open http://127.0.0.1:8000/ in the browser.
 
 ### Configuration
 
-No configuration is needed to run the project. By default `SECRET_KEY` uses a development placeholder. To use your own key, create a file named `.env` next to `manage.py` (it is ignored by git):
+Settings come from environment variables, read from a `.env` file placed next to `manage.py` (it is ignored by git). There is no default secret key: the project stops with a clear message if `DJANGO_SECRET_KEY` is missing.
 
-```
-DJANGO_SECRET_KEY=your-own-long-random-text
-```
+| Variable | Meaning | Default |
+|----------|---------|---------|
+| `DJANGO_SECRET_KEY` | Secret key (required). Generate one with `python -c "import secrets; print(secrets.token_urlsafe(50))"` | none |
+| `DJANGO_DEBUG` | `1` for local development | `0` |
+
+Debug mode is off by default, so an unknown address shows the custom 404 page instead of Django's technical page. For local development set `DJANGO_DEBUG=1` in `.env`. To see the custom 404 page locally, set `DJANGO_DEBUG=0` and start the server with `python manage.py runserver --insecure` (the flag makes Django serve the CSS while debug is off), then open an address such as http://127.0.0.1:8000/zzz.
 
 ## Sample data and demo accounts
 
 `seed_data.py` creates fictitious data: 4 customers, 5 devices, 5 services, 4 technicians and 10 orders that cover every status. Running it again resets the demo data (it removes all customer accounts, orders, devices, services and technicians first).
 
-All demo accounts use the same fake password: `Capstone2026`.
+All demo accounts use the same fake password: `Capstone2026`. This is a demo project: use fictitious data when registering.
 
 | Role | Username | Notes |
 |------|----------|-------|

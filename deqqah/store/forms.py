@@ -11,11 +11,17 @@ User = get_user_model()
 
 class CustomerRegistrationForm(UserCreationForm):
     name = forms.CharField(max_length=100)
-    phone = forms.CharField(max_length=20)
+    phone = forms.CharField(
+        max_length=20,
+        help_text="Use a fictitious phone number, for example 0550000099. This is a demo site.",
+    )
+    password1 = forms.CharField(label="Password", strip=False, widget=forms.PasswordInput)
+    password2 = forms.CharField(label="Password confirmation", strip=False, widget=forms.PasswordInput)
 
     class Meta(UserCreationForm.Meta):
         model = User
         fields = ("username",)
+        help_texts = {"username": ""}
 
     def clean_phone(self):
         phone = self.cleaned_data["phone"].strip()
@@ -64,4 +70,11 @@ class StaffOrderForm(forms.ModelForm):
         ):
             self.instance.completed_at = timezone.now()
         return cleaned_data
+
+
+class AccountForm(forms.ModelForm):
+    class Meta:
+        model = Customer
+        fields = ("name", "phone")
+        
 

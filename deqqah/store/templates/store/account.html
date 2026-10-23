@@ -1,0 +1,21 @@
+{% extends "store/base.html" %}
+
+{% block title %}My account{% endblock %}
+
+{% block content %}
+  <h1>My account</h1>
+  <p>
+    Username: <strong>{{ user.username }}</strong><br>
+    {% if customer %}Customer account{% elif user.is_superuser %}Administrator account{% else %}Staff account{% endif %}
+  </p>
+
+  {% if form %}
+    <form method="post">
+      {% csrf_token %}
+      {{ form.as_p }}
+      <button type="submit">Save</button>
+    </form>
+  {% endif %}
+
+  <p><a href="{% url 'store:password_change' %}">Change password</a></p>
+{% endblock %}
