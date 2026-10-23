@@ -21,6 +21,8 @@ Deqqah manages PC cleaning and assembly services for a small repair shop. Custom
 
 ## Wireframes
 
+Simple text wireframes of the main screens.
+
 My orders
 
 ```
@@ -82,10 +84,9 @@ Reports (staff)
 | 1 | Order creation, My orders and cancellation | Done |
 | 1 | Staff order list (search, filter, pagination) and order update | Done |
 | 1 | Reports with aggregation and annotation | Done |
-| 2 | Responsive CSS | In progress |
-| 2 | README, sample data and fresh setup check | To do |
-| 2 | Verification record | In progress |
-| 2 | Demo preparation | To do |
+| 2 | Responsive CSS | Done |
+| 2 | README, sample data and fresh setup check | Done |
+| 2 | Verification record | Done |
 | 3 | Future: Arabic interface, laptop support, notifications, online payment, order detail page | Not planned for this version |
 
 Blockers: none.
