@@ -19,6 +19,25 @@ Small PC repair shops usually take requests by phone or chat and track them on p
 - Account page: customers edit their name and phone, and every user can change the password
 - Responsive layout for desktop and phone
 
+## Screenshots
+
+![Home page with the logo, headline and the Explore Services and Request a Service buttons](docs/screenshots/home.png)
+*Home page, seen by a visitor.*
+
+![Services page with an icon and a price in SAR on each card](docs/screenshots/services.png)
+*Services page, open to everyone. Prices are fixed per service.*
+![Request a service form with the prices shown next to each service](docs/screenshots/request-service.png)
+*Customer view (`reem`): the customer chooses a device and services and sees the prices before ordering.*
+![My orders page with the status, services and total of each order](docs/screenshots/my-orders.png)
+*Customer view (`reem`): only this customer's orders. The Cancel link appears only for Requested orders.*
+![Staff page listing all orders with search, status filter and pagination](docs/screenshots/staff-orders.png)
+*Staff view (`staff`): every order, with search, status filter and pagination.*
+![Reports page with revenue, orders per technician and requests per service](docs/screenshots/reports.png)
+*Staff view (`staff`): revenue and average order value (aggregation), orders per technician and per service (annotation).*
+
+![Home page at phone width](docs/screenshots/mobile.png)
+*Home page at phone width (375 px).*
+
 ## Versions
 
 - Python 3.14
